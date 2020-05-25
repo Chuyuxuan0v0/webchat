@@ -7,28 +7,32 @@ var io = require('socket.io')(server)
 // 记录所有已经登录过的用户
 const users = []
 
-server.listen(4000, () => {
-  console.log('服务器启动成功了')
+server.listen(4400, () => {
+  console.log('4400服务器启动成功了')
 })
 
 // express处理静态资源
 // 把public目录设置为静态资源目录
 app.use(require('express').static('public'))
-var time=new Date().toLocaleTimeString()
+var ti = new Date().toLocaleTimeString()
+var me = new Date().toLocaleDateString()
+var time = me + ti;
 
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.redirect('/index.html')
 })
 
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
   socket.on('login', data => {
     // 判断，如果data在users中存在，说明该用户已经登录了，不允许登录
     // 如果data在users中不存在，说明该用户没有登录，允许用户登录
     let user = users.find(item => item.username === data.username)
     if (user) {
       // 表示用户存在， 登录失败. 服务器需要给当前用户响应，告诉登录失败
-      socket.emit('loginError', { msg: '登录失败' })
+      socket.emit('loginError', {
+        msg: '登录失败'
+      })
       // console.log('登录失败')
     } else {
       // 表示用户不存在, 登录成功
@@ -48,6 +52,25 @@ io.on('connection', function(socket) {
       // 把登录成功的用户名和头像存储起来
       socket.username = data.username
       socket.avatar = data.avatar
+
+
+
+      {
+        //插入操作
+        var add_user_info = 'INSERT INTO user_info(name,avatar,date) VALUES(?,?,?)';
+        var addSqlParams = [socket.username, socket.avatar,time];
+        //执行
+        connection.query(add_user_info, addSqlParams, function (err, result) {
+          if (err) {
+            console.log(socket.username+" 的用户登录信息保存失败："+err.message);
+            return;
+          }
+          //console.log('INSERT ID:',result.insertId);        
+          console.log(socket.username+" 的用户登录信息保存成功。");
+         
+        });
+      }
+
     }
   })
 
@@ -58,11 +81,13 @@ io.on('connection', function(socket) {
     let idx = users.findIndex(item => item.username === socket.username)
     // 删除掉断开连接的这个人
     users.splice(idx, 1)
+
+
     // 1. 告诉所有人，有人离开了聊天室
     io.emit('delUser', {
       username: socket.username,
       avatar: socket.avatar,
-      times:time
+      times: time
     })
     // 2. 告诉所有人，userList发生更新
     io.emit('userList', users)
@@ -71,8 +96,47 @@ io.on('connection', function(socket) {
   // 监听聊天的消息
   socket.on('sendMessage', data => {
     console.log(data)
+
+    {
+      //插入操作
+      var add_user_msg = 'INSERT INTO user_msg(user,avatar,msg,date) VALUES(?,?,?,?)';
+      var addSqlParams = [data.username, data.avatar, data.msg, time];
+      //执行
+      connection.query(add_user_msg, addSqlParams, function (err, result) {
+        if (err) {
+          console.log(data.username+' 的聊天消息保存失败：'+ err.message);
+          return;
+        }
+        console.log(data.username+' 的聊天消息保存成功。');
+      
+      });
+    }
+
     // 广播给所有用户
     io.emit('receiveMessage', data)
+  })
+
+  //监听历史记录查询
+
+  socket.on('select_Message', data => {
+    console.log(data.username + ' 进行了查看历史记录操作');
+
+    //遍历数据库
+    connection.query(data.select, function (err, result) {
+      if (err) {
+        console.log('[INSERT ERROR] - ', err.message);
+        return;
+      }
+      var dataString = JSON.stringify(result);
+       var data = JSON.parse(dataString);
+      //对数据进行字符串处理
+    // console.log(data)
+     
+      //发送给客户端数据
+   socket.emit('show_Message',data)
+
+    })
+
   })
 
   // 接收图片信息
@@ -81,3 +145,35 @@ io.on('connection', function(socket) {
     io.emit('receiveImage', data)
   })
 })
+
+
+//插入数据库
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '你的数据库密码',
+  port: '3306',
+  database: 'express' //这个我建议用express，我是根据这个来的，当然你也可以修改
+});
+// //数据库链接
+connection.connect()
+
+
+
+
+// //执行
+// connection.query(addSql, function (err, result) {
+//   if (err) {
+//     console.log('[INSERT ERROR] - ', err.message);
+//     return;
+//   }
+
+//   console.log('--------------------------INSERT----------------------------');
+//   //console.log('INSERT ID:',result.insertId);        
+//   console.log('INSERT ID:', result);
+//   console.log('-----------------------------------------------------------------\n\n');
+// });
+
+// connection.end();

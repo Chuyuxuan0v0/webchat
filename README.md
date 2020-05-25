@@ -1,6 +1,10 @@
 # webchat
 一款基于`Javascript+express+socket.io`构成的网络在线聊天应用
 
+具体效果可以访问[http://chat.chuyuxuan.xyz:4400](http://chat.chuyuxuan.xyz:4400)  
+
+ + **2020年10月10日前该链接有效，别问为啥，问就是服务器过期我负担不起😭，所以不错的话请给个star吧**
+
 # 下载
 
         git clone https://github.com/Chuyuxuan0v0/webchat.git
@@ -9,32 +13,58 @@
 
 + 你需要安装`node.js`,接下来才能进行一下操作，否则会报错误。
 
-        1.下载后进入根目录
+        
+⭐ 下载后进入根目录
         
         cd ...  \webchat\
 
-        2.运行一下命令
+⭐ 下载安装`node.js`
+        
+[点我下载](https://nodejs.org/en/download/)
+
+⭐ 安装`express` ~~项目包里已经集成，安装好node之后可以跳过~~
+
+        npm install express --save
+
+⭐ 安装`socket.io` ~~项目包里已经集成，安装好node之后可以跳过~~
+
+        npm install --save socket.io
+
+        npm install --save socket.io-client
+
+
+⭐ 安装`mysql` ~~项目包里已经集成，安装好node之后可以跳过~~
+
+        npm install mysql
+        
+⭐ 在MySQL中导入相关表
+
+        所有要建立的表我都放在express.sql里了，可以根据里面的sql语言自行建立，或者借用数据库管理工具例如 navicat 导入该文件进行表的创建。
+
+⭐ 启动项目
 
         node app.js
 
-        3.在浏览器中输入以下网址
+⭐ 在浏览器中输入以下网址 ~~这个端口可以自己更改的~~
 
-        localhost:4000
+        localhost:4400 
 
 # 部分功能展示
 + 1.可以实现在线聊天，发送图片
 + 2.可以是使用`ctrl+Enter`发送消息
 + 3.进入退出有提示
 + 4.适应手机，有响应式布局
-+ 5.。。。。。
++ 5.查看历史聊天记录
++ 6.。。。。。
 
 # 待优化
-- 会加入`MySQL`进行消息存储
-- 查看历史聊天记录
-- 私聊个人
-
+- 优化UI界面，降低耦合性
+- 优化界面响应速度
+- 能够私聊个人，一对一聊天
+- 。。。。。
 
 # 部分预览
 
 ![](cover1.jpg)
 ![](cover2.jpg)
+![](cover3.jpg)

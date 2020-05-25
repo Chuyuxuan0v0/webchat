@@ -107,8 +107,8 @@ body {
 .box-bd {
   position: absolute;
   width: 100%;
-  bottom: 180px;
-  top: 51px;
+  bottom: 200px;
+  top: 2px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -252,13 +252,13 @@ body {
   background: url('../images/wechat-sprit.png') no-repeat -404px -398px;
 }
 
-/* .box-ft .toolbar .screen-cut {
+.box-ft .toolbar .screen-cut {
   display: inline-block;
   vertical-align: middle;
   width: 30px;
   height: 30px;
-  background: url('../images/wechat-sprit.png') no-repeat -30px -432px;
-} */
+  background: url('../images/wechat-sprit.png') no-repeat -219px -429px;
+}
 
 .box-ft .toolbar .file label {
   opacity: 0;
@@ -371,8 +371,9 @@ body {
 
 .title {
   padding: 13px 18px 11px;
+  text-align: center;
   /* border-bottom: 1px solid #7a7a7a; */
-  border-top: 1px solid #ccc;
+  border-top: 5px solid #ccc;
   color: #7a7a7a;
 }
 
