@@ -1,96 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>聊天室</title>
-    <link rel="icon" href="images/logo.ico" type="images/x-ico" />
-    <link rel="stylesheet" href="lib/jquery-mCustomScrollbar/css/jquery.mCustomScrollbar.min.css"/>
-    <link rel="stylesheet" href="lib/jquery-emoji/css/jquery.emoji.css"/>
-    <link rel="stylesheet" href="css/index.css" />
-  </head>
-  <body>
-    <div class="login_box" style="display: block;" >
-      <div class="titles"><h3>用户登录</h3></div>
-      <p>用户名</p>
-      <input type="text" placeholder="请输入用户名" id="username" />
-      <p>密码</p>
-      <input type="password" placeholder="请输入密码" id="password" />
-      <p>选择头像</p>
-      <ul class="avatar" id="login_avatar">
-        <li class="now"><img src="images/avatar01.jpg" alt="" /></li>
-        <li><img src="images/avatar02.jpg" alt="" /></li>
-        <li><img src="images/avatar03.jpg" alt="" /></li>
-        <li><img src="images/avatar04.jpg" alt="" /></li>
-        <li><img src="images/avatar05.jpg" alt="" /></li>
-        <li><img src="images/avatar06.jpg" alt="" /></li>
-        <li><img src="images/avatar07.jpg" alt="" /></li>
-        <li><img src="images/avatar08.jpg" alt="" /></li>
-        <li><img src="images/avatar09.jpg" alt="" /></li>
-        <li><img src="images/avatar10.jpg" alt="" /></li>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>聊天室</title>
+  <link rel="icon" href="images/logo.ico" type="images/x-ico" />
+  <link rel="stylesheet" href="lib/jquery-mCustomScrollbar/css/jquery.mCustomScrollbar.min.css" />
+  <link rel="stylesheet" href="lib/jquery-emoji/css/jquery.emoji.css" />
+  <link rel="stylesheet" href="css/index.css" />
+</head>
+
+<body>
+  <div class="login_box" style="display: block;">
+    <div class="titles">
+      <h3>用户登录</h3>
+    </div>
+    <p>用户名</p>
+    <input type="text" placeholder="请输入用户名" id="username" />
+    <p>密码</p>
+    <input type="password" placeholder="请输入密码" id="password" />
+    <p>选择头像</p>
+    <ul class="avatar" id="login_avatar">
+      <li class="now"><img src="images/avatar01.jpg" alt="" /></li>
+      <li><img src="images/avatar02.jpg" alt="" /></li>
+      <li><img src="images/avatar03.jpg" alt="" /></li>
+      <li><img src="images/avatar04.jpg" alt="" /></li>
+      <li><img src="images/avatar05.jpg" alt="" /></li>
+      <li><img src="images/avatar06.jpg" alt="" /></li>
+      <li><img src="images/avatar07.jpg" alt="" /></li>
+      <li><img src="images/avatar08.jpg" alt="" /></li>
+      <li><img src="images/avatar09.jpg" alt="" /></li>
+      <li><img src="images/avatar10.jpg" alt="" /></li>
+    </ul>
+    <button class="weui-btn" id="loginBtn">登录</button>
+  </div>
+  <div class="container" style="display: none;">
+    <!-- 用户列表 -->
+    <div class="titles">
+      <h3>交流群(<span id="userCount">99</span>)</h3>
+    </div>
+    <div class="user-list">
+      <div class="header">
+        <div class="avatar">
+          <img class="img avatar_url" src="images/avatar2.jpg" alt="" />
+        </div>
+        <div class="info">
+
+          <h3 class="username">清流</h3>
+        </div>
+      </div>
+      <div class="title">
+        <h4>当前在线</h4>
+      </div>
+      <ul>
       </ul>
-      <button class="weui-btn" id="loginBtn">登录</button>
     </div>
-    <div class="container" style="display: none;">
-      <!-- 用户列表 -->
-      <div class="titles">
-        <h3>交流群(<span id="userCount">99</span>)</h3>
-      </div>
-      <div class="user-list">
-        <div class="header">
-          <div class="avatar">
-            <img class="img avatar_url" src="images/avatar2.jpg" alt="" />
-          </div>
-          <div class="info">
-         
-            <h3 class="username">清流</h3>
-          </div>
-        </div>
-        <div class="title"><h4>当前在线</h4></div>
-        <ul>
-        </ul>
-      </div>
-      <!-- 聊天主窗口 -->
-      <div class="box">
-        <!-- 聊天窗口头部 -->
-        <div class="box-hd"></div>
+    <!-- 聊天主窗口 -->
+    <div class="box">
+      <!-- 聊天窗口头部 -->
+      <div class="box-hd"></div>
 
-        <!-- 聊天窗口主体区域 -->
-        <div class="box-bd">
-        </div>
-
-        <!-- 聊天窗口底部区域 -->
-        <div class="box-ft">
-          <!-- 工具栏 -->
-          <div class="toolbar">
-            <a href="javascript:;" title="表情" class="face"></a>
-            <a href="javascript:;" title="历史记录" class="screen-cut">
-            </a>
-            <a href="javascript:;" title="图片" class="file">
-              <label for="file"></label>
-              <input type="file" id="file" style="display: none;">
-            </a>
-          </div>
-          <!-- 内容输入区域 -->
-          <div class="content" >
-            <!-- div添加一个属性：contenteditable -->
-            <div class="text" id="content" contenteditable></div>
-          </div>
-          <!-- 发送按钮 -->
-          <div class="action">
-            <span class="desc">按下Ctrl+Enter发送</span>
-            <a class="btn-send" id="btn-send" href="javascript:;">发送</a>
-          </div>
-        </div>
+      <!-- 聊天窗口主体区域 -->
+      <div class="box-bd">
       </div>
+
+      <!-- 聊天窗口底部区域 -->
+      <div class="box-ft">
+        <!-- 工具栏 -->
+        <div class="toolbar">
+          <a href="javascript:;" title="表情" class="face"></a>
+          <a href="javascript:;" title="历史记录" class="screen-cut">
+          </a>
+          <a href="javascript:;" title="图片" class="file">
+            <label for="file"></label>
+            <input type="file" id="file" style="display: none;">
+          </a>
+        </div>
+        <!-- 内容输入区域 -->
+        <div class="content">
+          <!-- div添加一个属性：contenteditable -->
+          <div class="text" id="content" contenteditable></div>
+        </div>
+        <!-- 发送按钮 -->
+        <div class="action">
+          <span class="desc">按下Ctrl+Enter发送</span>
+          <a class="btn-send" id="btn-send" href="javascript:;">发送</a>
+        </div>
       </div>
     </div>
-    <!-- 引入socketio -->
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="js/jquery-1.12.4.js"></script>
-    <script src="lib/jquery-mCustomScrollbar/script/jquery.mCustomScrollbar.min.js"></script>
-    <script src="lib/jquery-emoji/js/jquery.emoji.min.js"></script>
-    <script src="js/index.js"></script>
-  </body>
+  </div>
+  </div>
+  <!-- 引入socketio -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/jquery-1.12.4.js"></script>
+  <script src="lib/jquery-mCustomScrollbar/script/jquery.mCustomScrollbar.min.js"></script>
+  <script src="lib/jquery-emoji/js/jquery.emoji.min.js"></script>
+  <script src="js/index.js"></script>
+  <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+  <script type="text/javascript">
+   socket.emit('sendIP',{
+     ip: returnCitySN["cip"],
+     name:returnCitySN["cname"]
+   })
+  </script>
+</body>
+
 </html>

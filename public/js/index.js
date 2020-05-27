@@ -310,7 +310,7 @@ $('.face').on('click', function () {
     icons: [{
       name: '表情',
       path: 'lib/jquery-emoji/img/bzhan/',
-      maxNum: 91,
+      maxNum: 73,
       // excludeNums: [41, 45, 54],
       file: '.png'
     }]

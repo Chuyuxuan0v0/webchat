@@ -35,6 +35,7 @@ io.on('connection', function (socket) {
       })
       // console.log('登录失败')
     } else {
+      
       // 表示用户不存在, 登录成功
       users.push(data)
       // 告诉用户，登录成功
@@ -53,12 +54,13 @@ io.on('connection', function (socket) {
       socket.username = data.username
       socket.avatar = data.avatar
 
-
-
+     
+        console.log(socket.username+' 的IP地址是 '+socket.ip+socket.city)
+    
       {
         //插入操作
-        var add_user_info = 'INSERT INTO user_info(name,avatar,date) VALUES(?,?,?)';
-        var addSqlParams = [socket.username, socket.avatar,time];
+        var add_user_info = 'INSERT INTO user_info(name,avatar,date,ip,city) VALUES(?,?,?,?,?)';
+        var addSqlParams = [socket.username, socket.avatar,time,socket.ip,socket.city];
         //执行
         connection.query(add_user_info, addSqlParams, function (err, result) {
           if (err) {
@@ -70,8 +72,13 @@ io.on('connection', function (socket) {
          
         });
       }
-
     }
+  })
+
+  socket.on('sendIP',data=>{
+    socket.ip = data.ip;
+    socket.city = data.name;
+   
   })
 
   // 用户断开连接的功能
@@ -96,7 +103,6 @@ io.on('connection', function (socket) {
   // 监听聊天的消息
   socket.on('sendMessage', data => {
     console.log(data)
-
     {
       //插入操作
       var add_user_msg = 'INSERT INTO user_msg(user,avatar,msg,date) VALUES(?,?,?,?)';
@@ -111,6 +117,7 @@ io.on('connection', function (socket) {
       
       });
     }
+
 
     // 广播给所有用户
     io.emit('receiveMessage', data)
@@ -140,7 +147,7 @@ io.on('connection', function (socket) {
   })
 
   // 接收图片信息
-  socket.on('sendImage', data => {
+  socket.on('git', data => {
     // 广播给所有用户
     io.emit('receiveImage', data)
   })
@@ -153,7 +160,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '你的数据库密码',
+  password: 'chuyuxuan',
   port: '3306',
   database: 'express' //这个我建议用express，我是根据这个来的，当然你也可以修改
 });
