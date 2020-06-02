@@ -6,6 +6,12 @@
 */
 var socket = io('http://localhost:4400')
 var username, avatar
+
+
+
+
+
+
 /* 
   2. 登录功能
 */
@@ -110,13 +116,18 @@ $('.btn-send').on('click', () => {
   // 获取到聊天的内容
   var content = $('#content').html()
   $('#content').html('')
-
+  
+ var ti = new Date().toLocaleTimeString()
+  var me = new Date().toLocaleDateString()
+  var time = me + ti;
+  
   if (!content) return alert('请输入内容')
   // 发送给服务器
   socket.emit('sendMessage', {
     msg: content,
     username: username,
-    avatar: avatar
+    avatar: avatar,
+    times: time
   })
 })
 
@@ -126,12 +137,20 @@ $("#content").keydown(function (event) {
   if (event.ctrlKey && event.which === 13) {
     var content = $('#content').html()
     $('#content').html('')
+    
+    
+     var ti = new Date().toLocaleTimeString()
+  var me = new Date().toLocaleDateString()
+  var time = me + ti;
+    
     if (!content) return alert('请输入内容')
     // 发送给服务器
+    
     socket.emit('sendMessage', {
       msg: content,
       username: username,
-      avatar: avatar
+      avatar: avatar,
+      times:time
     })
 
   }
@@ -150,7 +169,7 @@ socket.on('receiveMessage', data => {
           <img class="avatar" src="${data.avatar}" alt="" />
           <div class="content">
             <div class="bubble">
-              <div class="bubble_cont">${data.msg}</div>
+              <div class="bubble_cont">${data.times}<br><br>${data.msg}</div>
             </div>
           </div>
         </div>
@@ -165,7 +184,7 @@ socket.on('receiveMessage', data => {
           <div class="content">
             <div class="nickname">${data.username}</div>
             <div class="bubble">
-              <div class="bubble_cont">${data.msg}</div>
+              <div class="bubble_cont">${data.times}<br><br>${data.msg}</div>
             </div>
           </div>
         </div>
@@ -190,11 +209,17 @@ $('#file').on('change', function () {
   // 需要把这个文件发送到服务器， 借助于H5新增的fileReader
   var fr = new FileReader()
   fr.readAsDataURL(file)
+  
+   var ti = new Date().toLocaleTimeString()
+  var me = new Date().toLocaleDateString()
+  var time = me + ti;
+  
+  
   fr.onload = function () {
     socket.emit('sendImage', {
       username: username,
       avatar: avatar,
-      img: fr.result
+      img: fr.result,
     })
   }
 })
@@ -204,7 +229,7 @@ $('.screen-cut').on('click', function () {
 
   socket.emit('select_Message', {
     username: username,
-    select: 'SELECT id,user,avatar,msg,date FROM user_msg ',
+    select: 'SELECT user,avatar,msg,date FROM user_msg ',
 
   })
 
@@ -222,12 +247,13 @@ $('.screen-cut').on('click', function () {
           <img class="avatar" src="${data[i].avatar}" alt="" />
           <div class="content">
             <div class="bubble">
-              <div class="bubble_cont">${data[i].msg}</div>
+              <div class="bubble_cont">${data[i].date}<br><br>${data[i].msg}</div>
             </div>
           </div>
         </div>
       </div>
     `)
+    scrollIntoView()
     } else {
       // 别人的消息
       $('.box-bd').append(`
@@ -237,19 +263,19 @@ $('.screen-cut').on('click', function () {
           <div class="content">
             <div class="nickname">${data[i].user}</div>
             <div class="bubble">
-              <div class="bubble_cont">${data[i].msg}</div>
+              <div class="bubble_cont">${data[i].date}<br><br>${data[i].msg}</div>
             </div>
           </div>
         </div>
       </div>
     `)
-
+scrollIntoView()
     }
+   
   }
 
-
   })
-
+ 
 })
 
 

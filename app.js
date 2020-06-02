@@ -14,9 +14,9 @@ server.listen(4400, () => {
 // express处理静态资源
 // 把public目录设置为静态资源目录
 app.use(require('express').static('public'))
-var ti = new Date().toLocaleTimeString()
-var me = new Date().toLocaleDateString()
-var time = me + ti;
+// var ti = new Date().toLocaleTimeString()
+// var me = new Date().toLocaleDateString()
+// var time = me + ti;
 
 
 app.get('/', function (req, res) {
@@ -53,14 +53,14 @@ io.on('connection', function (socket) {
       // 把登录成功的用户名和头像存储起来
       socket.username = data.username
       socket.avatar = data.avatar
-
+  
      
         console.log(socket.username+' 的IP地址是 '+socket.ip+socket.city)
     
       {
         //插入操作
         var add_user_info = 'INSERT INTO user_info(name,avatar,date,ip,city) VALUES(?,?,?,?,?)';
-        var addSqlParams = [socket.username, socket.avatar,time,socket.ip,socket.city];
+        var addSqlParams = [socket.username, socket.avatar,data.times,socket.ip,socket.city];
         //执行
         connection.query(add_user_info, addSqlParams, function (err, result) {
           if (err) {
@@ -94,8 +94,10 @@ io.on('connection', function (socket) {
     io.emit('delUser', {
       username: socket.username,
       avatar: socket.avatar,
-      times: time
+      times: socket.times
+     
     })
+     console.log(socket.username +'离开了聊天室')
     // 2. 告诉所有人，userList发生更新
     io.emit('userList', users)
   })
@@ -106,7 +108,7 @@ io.on('connection', function (socket) {
     {
       //插入操作
       var add_user_msg = 'INSERT INTO user_msg(user,avatar,msg,date) VALUES(?,?,?,?)';
-      var addSqlParams = [data.username, data.avatar, data.msg, time];
+      var addSqlParams = [data.username, data.avatar, data.msg,data.times];
       //执行
       connection.query(add_user_msg, addSqlParams, function (err, result) {
         if (err) {
@@ -120,7 +122,12 @@ io.on('connection', function (socket) {
 
 
     // 广播给所有用户
-    io.emit('receiveMessage', data)
+    io.emit('receiveMessage', {
+        msg: data.msg,
+    username: data.username,
+    avatar: data.avatar,
+    times:data.times
+    })
   })
 
   //监听历史记录查询
@@ -137,7 +144,7 @@ io.on('connection', function (socket) {
       var dataString = JSON.stringify(result);
        var data = JSON.parse(dataString);
       //对数据进行字符串处理
-    // console.log(data)
+     //console.log(data)
      
       //发送给客户端数据
    socket.emit('show_Message',data)
@@ -146,11 +153,13 @@ io.on('connection', function (socket) {
 
   })
 
-  // 接收图片信息
-  socket.on('git', data => {
+  // 接收图片信息d
+  socket.on('sendImage', data => {
     // 广播给所有用户
+     console.log(data.username+"发送了图片");
     io.emit('receiveImage', data)
   })
+ 
 })
 
 
@@ -160,7 +169,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'chuyuxuan',
+  password: '123456',
   port: '3306',
   database: 'express' //这个我建议用express，我是根据这个来的，当然你也可以修改
 });
