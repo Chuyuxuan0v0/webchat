@@ -1,11 +1,21 @@
 # webchat
-一款基于`Javascript+express+socket.io`构成的网络在线聊天应用
+![](http://chat.chuyuxuan.xyz:4400/images/logo.ico)
+一款基于`Javascript+express+socket.io`构成的网络在线聊天应用 感谢[aermin](https://github.com/aermin)大佬提供帮助！
 
-具体效果可以访问[http://chat.chuyuxuan.xyz:4400](http://chat.chuyuxuan.xyz:4400)   
+具体效果可以访问[http://chat.chuyuxuan.xyz:4400](http://chat.chuyuxuan.xyz:4400) 
+
 + **2020年10月10日前该链接有效，别问为啥，问就是服务器过期我负担不起😭，所以不错的话请给个star吧**
 
 
-## 项目讲解：[BV1B54y1D7dA](https://www.bilibili.com/video/BV1B54y1D7dA/)
+
+[![Socket.io](https://img.shields.io/badge/socket.io-2.0-ff69b4)](https://socket.io/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-ff69b4)](https://www.mysql.com/downloads/)
+[![License](https://img.shields.io/badge/License-MIT-ff69b4.svg)](https://github.com/aermin/ghChat/blob/master/LICENSE)
+[![Author](https://img.shields.io/badge/Author-Chuyuxuan0v0-ff69b4)](https://github.com/chuyuxuan0v0)
+
+
+
+## 小项目讲解：[BV1B54y1D7dA](https://www.bilibili.com/video/BV1B54y1D7dA/)
 
 
 ---
