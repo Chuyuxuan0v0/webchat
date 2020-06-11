@@ -1,6 +1,6 @@
 # webchat
 ![](http://chat.chuyuxuan.xyz:4400/images/logo.ico)
-一款基于`Javascript+express+socket.io`构成的网络在线聊天应用 感谢[aermin](https://github.com/aermin)大佬提供帮助！
+一款基于`Javascript+express+socket.io`构成的网络在线聊天应用 
 
 具体效果可以访问[http://chat.chuyuxuan.xyz:4400](http://chat.chuyuxuan.xyz:4400) 
 
