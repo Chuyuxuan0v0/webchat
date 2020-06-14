@@ -7,8 +7,8 @@ var io = require('socket.io')(server)
 // 记录所有已经登录过的用户
 const users = []
 
-server.listen(4400, () => {
-  console.log('4400服务器启动成功了')
+server.listen(80, () => {
+  console.log('80服务器启动成功了')
 })
 
 // express处理静态资源
@@ -164,32 +164,31 @@ io.on('connection', function (socket) {
 
 
 //插入数据库
-var mysql = require('mysql');
+let connection ='';
+mysql = require('mysql');
+function handleDisconnection() {
+    connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',  //用户名
+        password: '',   //密码
+        database: 'express', //数据库名字  
+        port: '3306'     //端口号
+    })
+    connection.connect(function (err) {
+        if (err) {
+            setTimeout('handleDisconnection()', 2000);
+        }
+    });
 
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '123456',
-  port: '3306',
-  database: 'express' //这个我建议用express，我是根据这个来的，当然你也可以修改
-});
-// //数据库链接
-connection.connect()
+    connection.on('error', function (err) {
+        logger.error('db error', err);
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            logger.error('db error执行重连:' + err.message);
+            handleDisconnection();
+        } else {
+            throw err;
+        }
+    });
+}
+handleDisconnection();
 
-
-
-
-// //执行
-// connection.query(addSql, function (err, result) {
-//   if (err) {
-//     console.log('[INSERT ERROR] - ', err.message);
-//     return;
-//   }
-
-//   console.log('--------------------------INSERT----------------------------');
-//   //console.log('INSERT ID:',result.insertId);        
-//   console.log('INSERT ID:', result);
-//   console.log('-----------------------------------------------------------------\n\n');
-// });
-
-// connection.end();
