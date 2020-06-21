@@ -16,7 +16,7 @@
 
 
 ## 小项目讲解：[BV1B54y1D7dA](https://www.bilibili.com/video/BV1B54y1D7dA/)
-
+## 小项目导入：[BV1v54y1B7LV](https://www.bilibili.com/video/BV1v54y1B7LV/)
 
 ---
 
@@ -28,29 +28,19 @@
 
 + 你需要安装`node.js`,接下来才能进行一下操作，否则会报错误。
 
+⭐ 下载安装`node.js`
+        
+[点我下载](https://nodejs.org/en/download/)
+
         
 ⭐ 下载后进入根目录
         
         cd ...  \webchat\
 
-⭐ 下载安装`node.js`
-        
-[点我下载](https://nodejs.org/en/download/)
 
-⭐ 安装`express` ~~项目包里已经集成，安装好node之后可以跳过~~
+⭐ 跟新依赖
 
-        npm install express --save
-
-⭐ 安装`socket.io` ~~项目包里已经集成，安装好node之后可以跳过~~
-
-        npm install --save socket.io
-
-        npm install --save socket.io-client
-
-
-⭐ 安装`mysql` ~~项目包里已经集成，安装好node之后可以跳过~~
-
-        npm install mysql
+        npm install 
         
 ⭐ 在MySQL中导入相关表
 
