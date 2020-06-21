@@ -8,7 +8,7 @@ var io = require('socket.io')(server)
 const users = []
 
 server.listen(4400, () => {
-  console.log('80服务器启动成功了')
+  console.log('4400服务器启动成功了')
 })
 
 // express处理静态资源
