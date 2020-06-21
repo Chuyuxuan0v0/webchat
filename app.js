@@ -7,7 +7,7 @@ var io = require('socket.io')(server)
 // 记录所有已经登录过的用户
 const users = []
 
-server.listen(80, () => {
+server.listen(4400, () => {
   console.log('80服务器启动成功了')
 })
 
