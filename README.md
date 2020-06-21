@@ -38,7 +38,7 @@
         cd ...  \webchat\
 
 
-⭐ 跟新依赖
+⭐ 更新依赖
 
         npm install 
         
