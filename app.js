@@ -170,7 +170,7 @@ function handleDisconnection() {
     connection = mysql.createConnection({
         host: 'localhost',
         user: 'root',  //用户名
-        password: '',   //密码
+        password: '123456',   //密码
         database: 'express', //数据库名字  
         port: '3306'     //端口号
     })

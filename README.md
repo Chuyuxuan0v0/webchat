@@ -69,6 +69,11 @@
 
 *数据表会不定时更新，详情请看代码里的链接*
 
+⭐ 更改数据库属性
+
+        需要进入app.js 文件，大概在173行左右
+        填入你的数据库配置相关
+
 
 ⭐ 启动项目
 
@@ -77,6 +82,34 @@
 ⭐ 在浏览器中输入以下网址 ~~这个端口可以自己更改的~~
 
         localhost:4400 
+
+
+# 错误提示
+
+如果你遇到以下错误请更新数据配置文件。
+```sql        
+错误演示：
+throw err; // Rethrow non-MySQL errors
+
+解决办法：
+// 进入mysql 输入密码例如：123456
+        mysql -u root -p 
+
+// 1.执行语句 alter user 'root'@'localhost' identified with mysql_native_password by 密码;
+
+mysql> alter user 'root'@'localhost' identified with mysql_native_password by '123456';
+
+
+// 2.再执行语句 flush privileges;
+
+mysql> flush privileges;
+
+// 3.成功后 退出
+
+mysql> quit
+       
+```
+
 
 # 部分功能展示
 + 1.可以实现在线聊天，发送图片
