@@ -2,7 +2,7 @@
 ![](http://chat.chuyuxuan.xyz:4400/images/logo.ico)
 一款基于`Javascript+express+socket.io`构成的网络在线聊天应用 
 
-具体效果可以访问[http://chat.chuyuxuan.xyz:4400](http://chat.chuyuxuan.xyz:4400) 
+具体效果可以访问[http://chat.chuyuxuan.xyz](http://chat.chuyuxuan.xyz) 
 
 + **2020年10月10日前该链接有效，别问为啥，问就是服务器过期我负担不起😭，所以不错的话请给个star吧**
 
