@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "express": "^4.22.1",
+    "express": "^5.2.1",
     "mysql": "^2.18.1",
     "socket.io": "^2.2.0"
   }
