@@ -1,140 +1,137 @@
+# Webchat v2.0
 
+基于 Vue3 + TypeScript + Express + Socket.IO 的实时群聊与私聊 Web 应用。
 
+> v1.0（原始版本）保留在 `master` 分支和 `v1.0` tag 中。
 
-# webchat
-![](http://chat.chuyuxuan.xyz:4400/images/logo.ico)
-一款基于`Javascript+express+socket.io`构成的网络在线聊天应用 
+## 技术栈
 
-具体效果可以访问[http://chat.chuyuxuan.top](http://chat.chuyuxuan.top) 
+| 层 | 技术 |
+|---|---|
+| 前端 | Vue 3 + TypeScript + Vite |
+| 后端 | Express + TypeScript |
+| 数据库 | MySQL + Prisma ORM |
+| 实时通信 | Socket.IO v4 |
+| 用户认证 | JWT + bcryptjs |
+| Markdown 渲染 | marked + DOMPurify（XSS 防护） |
 
-+ **2020年10月10日前该链接应该有效，别问为啥，问就是服务器过期我负担不起😭，所以不错的话请给个star吧**
+## 快速开始
 
+### 环境要求
 
+- Node.js >= 18
+- MySQL 8.0+（或 Docker）
 
-[![Socket.io](https://img.shields.io/badge/socket.io-2.0-ff69b4)](https://socket.io/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-ff69b4)](https://www.mysql.com/downloads/)
-[![License](https://img.shields.io/badge/License-MIT-ff69b4.svg)](https://github.com/aermin/ghChat/blob/master/LICENSE)
-[![Author](https://img.shields.io/badge/Author-Chuyuxuan0v0-ff69b4)](https://github.com/chuyuxuan0v0)
+### 数据库准备
 
+```bash
+# 使用 Docker 启动 MySQL
+docker run -d --name webchat-mysql \
+  -e MYSQL_ROOT_PASSWORD=123456 \
+  -p 3306:3306 \
+  mysql:8.0
 
-
-## 小项目讲解：[BV1B54y1D7dA](https://www.bilibili.com/video/BV1B54y1D7dA/)
-## 小项目导入：[BV1v54y1B7LV](https://www.bilibili.com/video/BV1v54y1B7LV/)
-
----
-
-# 下载
-
-        git clone https://github.com/Chuyuxuan0v0/webchat.git
-
-# 使用
-
-+ 你需要安装`node.js`,接下来才能进行一下操作，否则会报错误。
-
-⭐ 下载安装`node.js`
-        
-[点我下载](https://nodejs.org/en/download/)
-
-        
-⭐ 下载后进入根目录
-        
-        cd ...  \webchat\
-
-
-⭐ 更新依赖
-
-        npm install 
-        
-⭐ 在MySQL中导入相关表
-
-        所有要建立的表我都放在express.sql里了，可以根据里面的sql语言自行建立，
-        或者借用数据库管理工具例如 navicat 导入该文件进行表的创建。
-**注意。我是依赖于mysql 8.0的版本而创建的表格，如果你的sql文件导入不成功，请手动创建表**
-表格目录如下:
-
-||||user_info||||
-|:-|:-|:-|:-|:-|:-|:-|
-|名|类型|长度|小数点|不是null|主键|注释|
-|id|int|5|0|√|🔑|注册用户数，注意，要选择自增|
-|name|varchar|15|0|√||用户名|
-|avatar|varchar|100|0|√||头像路径|
-|date|varchar|20|0|√||日期|
-
-||||user_msg||||
-|:-|:-|:-|:-|:-|:-|:-|
-|名|类型|长度|小数点|不是null|主键|注释|
-|id|int|5|0|√|🔑|注意，要选择自增|
-|user|varchar|15|0|√||用户名|
-|avatar|varchar|100|0|√||头像路径|
-|msg|varchar|255|0|√||用户消息|
-|date|varchar|20|0|√||日期|
-
-
-*数据表会不定时更新，详情请看代码里的链接*
-
-⭐ 更改数据库属性
-
-        需要进入app.js 文件，大概在173行左右
-        填入你的数据库配置相关
-
-
-⭐ 启动项目
-
-        node app.js
-
-⭐ 在浏览器中输入以下网址 ~~这个端口可以自己更改的~~
-
-        localhost:4400 
-
-
-# 错误提示
-
-如果你遇到以下错误请更新数据配置文件。
-```sql        
-错误演示：
-throw err; // Rethrow non-MySQL errors
-
-解决办法：
-// 进入mysql 输入密码例如：123456
-        mysql -u root -p 
-
-// 1.执行语句 alter user 'root'@'localhost' identified with mysql_native_password by 密码;
-
-mysql> alter user 'root'@'localhost' identified with mysql_native_password by '123456';
-
-
-// 2.再执行语句 flush privileges;
-
-mysql> flush privileges;
-
-// 3.成功后 退出
-
-mysql> quit
-       
+# 创建数据库
+docker exec webchat-mysql mysql -uroot -p123456 \
+  -e "CREATE DATABASE webchat_v2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 ```
 
+### 安装与启动
 
-# 部分功能展示
-+ 1.可以实现在线聊天，发送图片
-+ 2.可以是使用`ctrl+Enter`发送消息
-+ 3.进入退出有提示
-+ 4.适应手机，有响应式布局
-+ 5.查看历史聊天记录
-+ 6.。。。。。
+```bash
+# 后端
+cd server
+npm install
+npx prisma db push    # 创建数据库表
+npm run dev           # 启动后端（端口 3000）
 
-# 2020年6月2日更新
-+ 修改了时间不显示的问题，增加了消息时间戳。
-+ 增加了emoji表情发送，大家可以发送自己喜欢的emoji表情了。
-+ 调整了响应速度。
+# 前端（新开一个终端）
+cd client
+npm install
+npm run dev           # 启动前端（端口 5173）
+```
 
-# 待优化
-- 优化UI界面，降低耦合性
-- 优化界面响应速度
-- 能够私聊个人，一对一聊天
-- 。。。。。
+打开浏览器访问 http://localhost:5173
 
-# 部分预览
+## 项目结构
 
-![](cover1.jpg)
-![](cover2.jpg)
-![](cover3.jpg)
+```
+webchat-1/
+  client/                  # Vue3 前端
+    src/
+      views/               # 页面组件
+        LoginView.vue      # 登录/注册页
+        ChatView.vue       # 聊天主页
+      components/          # 通用组件
+        ChatMessage.vue    # 消息气泡（支持 Markdown + XSS 防护）
+        ChatInput.vue      # 输入框（文字/图片/Markdown 切换）
+        ChatSidebar.vue    # 侧边栏（在线用户 + 未读徽章）
+        UserAvatar.vue     # 头像组件
+      stores/              # Pinia 状态管理
+        auth.ts            # 用户认证状态
+        chat.ts            # 聊天消息状态
+      composables/         # 组合式函数
+        useSocket.ts       # Socket.IO 连接管理
+      router/              # Vue Router 路由 + 守卫
+      types/               # TypeScript 类型定义
+      utils/               # API 客户端（axios）
+
+  server/                  # Express 后端
+    src/
+      routes/              # API 路由
+        auth.ts            # 注册/登录
+        user.ts            # 用户信息
+        chat.ts            # 聊天历史/未读/图片上传
+      controllers/         # 控制器
+        authController.ts  # 认证相关逻辑
+      middleware/           # 中间件
+        auth.ts            # JWT 验证中间件
+      socket/              # Socket.IO 事件处理
+        index.ts           # 初始化 + JWT 鉴权
+        chatHandler.ts     # 群聊/私聊消息处理
+        userHandler.ts     # 用户上线/下线处理
+      utils/
+        db.ts              # Prisma 客户端单例
+    prisma/
+      schema.prisma        # 数据模型定义
+```
+
+## 功能特性
+
+- **用户注册/登录** — 邮箱 + 密码，JWT 鉴权
+- **群聊** — 所有在线用户实时消息
+- **私聊** — 一对一私信，支持离线消息
+- **图片发送** — JPEG/PNG/GIF/WebP，最大 5MB，UUID 文件名
+- **Markdown 支持** — 发送 Markdown 格式消息，前端安全渲染
+- **XSS 防护** — 纯文本和 Markdown 消息均经过 DOMPurify 过滤
+- **未读消息** — 私聊未读计数，打开后自动标记已读
+- **在线状态** — 实时显示在线用户列表
+- **聊天历史** — 分页加载历史消息
+
+## API 接口
+
+| 方法 | 路径 | 鉴权 | 说明 |
+|------|------|------|------|
+| POST | /api/auth/register | 否 | 注册（邮箱+用户名+密码+头像） |
+| POST | /api/auth/login | 否 | 登录，返回 JWT token |
+| GET | /api/user/profile | 是 | 获取当前用户信息 |
+| PUT | /api/user/profile | 是 | 更新个性签名/用户名 |
+| GET | /api/chat/history | 是 | 查询聊天历史（群聊/私聊） |
+| GET | /api/chat/unread | 是 | 获取未读消息计数 |
+| PUT | /api/chat/read | 是 | 标记消息为已读 |
+| POST | /api/chat/upload | 是 | 上传图片 |
+
+## 环境变量
+
+在 `server/.env` 中配置：
+
+```env
+DATABASE_URL="mysql://root:123456@localhost:3306/webchat_v2"
+JWT_SECRET="your-secret-key"
+PORT=3000
+```
+
+## 版本历史
+
+- **v2.0** — 前后端分离重构，Vue3 + TypeScript + Prisma，新增私聊、Markdown、XSS 防护
+- **v1.0** — 原始版本（jQuery + Express 单体架构）

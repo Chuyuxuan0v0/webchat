@@ -8,7 +8,7 @@
         "MYSQL_PORT": "3306",
         "MYSQL_USER": "root",
         "MYSQL_PASSWORD": "123456",
-        "MYSQL_DATABASE": "mms_db"
+        "MYSQL_DATABASE": "webchat_v2"
       }
     }
   }
