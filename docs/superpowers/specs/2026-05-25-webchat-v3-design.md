@@ -79,15 +79,18 @@ webchat-3/
 ```typescript
 {
   _id: ObjectId
-  username: string          // 唯一用户名
-  email: string             // 唯一邮箱
+  username: string          // 昵称，至少 2 个字符，可修改
+  email: string             // 唯一身份标识，不可修改
   password: string          // bcrypt 哈希
-  avatar: string            // 头像 URL（默认头像）
+  avatar: string            // 头像 URL（可选，用户自定义上传）
+  avatarBgColor: string     // 默认头像背景色（随机生成的十六进制颜色）
   status: 'online' | 'offline' | 'away'
   createdAt: Date
   updatedAt: Date
 }
 ```
+
+**默认头像设计**：用户未设置自定义头像时，取用户名后 2 个字符作为头像文字，配合 `avatarBgColor` 随机背景色显示（参考飞书风格）。例如用户名"张三元"，默认头像显示"三元"。注册时用户名长度必须 >= 2。
 
 ### Message
 
@@ -117,8 +120,8 @@ webchat-3/
 
 | 方法 | 路径 | 说明 |
 |---|---|---|
-| POST | `/api/auth/register` | 注册（username + email + password） |
-| POST | `/api/auth/login` | 登录，返回 JWT |
+| POST | `/api/auth/register` | 注册（email 作为唯一标识 + username >= 2字符 + password） |
+| POST | `/api/auth/login` | 邮箱+密码登录，返回 JWT |
 | GET | `/api/users/me` | 获取当前用户信息 |
 | PUT | `/api/users/me` | 更新个人信息 |
 | GET | `/api/users/online` | 获取在线用户列表 |
@@ -166,12 +169,12 @@ App.tsx
 │   ├── LoginPage.tsx
 │   └── ChatPage.tsx
 ├── components/
-│   ├── Avatar.tsx
+│   ├── Avatar.tsx            # 头像组件（自定义图片 or 用户名后2字+随机背景色）
 │   ├── EmojiPicker.tsx
 │   ├── FileUpload.tsx
 │   └── Loading.tsx
 ├── stores/
-│   ├── authStore.ts        # user, token, login(), logout()
+│   ├── authStore.ts        # user, token, login(), logout(), updateProfile()
 │   ├── chatStore.ts        # messages, activeChat, onlineUsers, sendMessage(), loadHistory()
 │   └── socketStore.ts      # socket, connect(), disconnect()
 ├── services/
@@ -251,8 +254,8 @@ pnpm --filter web dev         # 仅前端
 
 ### Phase 2：后端核心
 - MongoDB 连接
-- User / Message Mongoose 模型
-- 注册/登录 API + JWT
+- User / Message Mongoose 模型（邮箱唯一标识，用户名 >= 2 字符）
+- 注册/登录 API + JWT（邮箱登录）
 - 认证中间件
 
 ### Phase 3：Socket.IO
