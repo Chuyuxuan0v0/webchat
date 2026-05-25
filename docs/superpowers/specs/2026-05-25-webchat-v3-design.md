@@ -92,6 +92,24 @@ webchat-3/
 
 **默认头像设计**：用户未设置自定义头像时，取用户名后 2 个字符作为头像文字，配合 `avatarBgColor` 随机背景色显示（参考飞书风格）。例如用户名"张三元"，默认头像显示"三元"。注册时用户名长度必须 >= 2。
 
+### Group（群聊）
+
+```typescript
+{
+  _id: ObjectId
+  name: string              // 群名称
+  description: string       // 群简介/描述
+  avatar: string            // 群头像 URL（可选）
+  avatarBgColor: string     // 默认头像背景色（群名首字 + 随机色）
+  owner: ObjectId           // 群主 ref -> User
+  members: ObjectId[]       // 群成员 ref -> User
+  createdAt: Date
+  updatedAt: Date
+}
+```
+
+**群头像设计**：群未设置自定义头像时，取群名称第 1 个字 + 随机背景色显示。
+
 ### Message
 
 ```typescript
@@ -103,7 +121,7 @@ webchat-3/
   fileUrl?: string          // 图片/文件 URL
   fileName?: string         // 文件名
   chatType: 'group' | 'private'
-  chatId: string            // 群聊: 'global'，私聊: 两个用户ID排序拼接
+  chatId: string            // 群聊: groupId，私聊: 两个用户ID排序拼接
   createdAt: Date
 }
 ```
@@ -127,6 +145,12 @@ webchat-3/
 | GET | `/api/users/online` | 获取在线用户列表 |
 | GET | `/api/messages/:chatId` | 获取聊天历史（分页，query: page, limit） |
 | POST | `/api/upload` | 上传图片/文件 |
+| GET | `/api/groups` | 获取用户加入的群列表 |
+| POST | `/api/groups` | 创建群（name, description, avatar?） |
+| GET | `/api/groups/:id` | 获取群信息 |
+| PUT | `/api/groups/:id` | 更新群信息（名称、描述、头像） |
+| POST | `/api/groups/:id/members` | 添加群成员 |
+| DELETE | `/api/groups/:id/members/:userId` | 移除群成员 |
 
 ### Socket.IO 事件
 
@@ -151,13 +175,16 @@ LoginPage    — 登录/注册（Tab 切换）
 ChatPage     — 聊天主页面
   ├── Sidebar（左侧边栏）
   │   ├── UserList — 在线用户列表
-  │   └── ChatList — 最近会话列表
+  │   └── ChatList — 最近会话列表（群聊 + 私聊）
   ├── ChatWindow（中间聊天区）
+  │   ├── ChatHeader — 聊天顶部栏
+  │   │   ├── 群聊：群头像 + 群名 + 成员数
+  │   │   └── 私聊：对方头像 + 用户名 + 在线状态
   │   ├── MessageList — 消息列表
   │   ├── MessageInput — 输入框 + 上传按钮
   │   └── MessageBubble — 单条消息气泡
   └── InfoPanel（右侧信息面板）
-      ├── 群聊：群名 + 在线人数/总人数 + 在线用户列表
+      ├── 群聊：群头像 + 群名 + 群简介 + 在线人数/总人数 + 成员列表
       └── 私聊：对方头像 + 用户名 + 在线状态
 ```
 
@@ -175,7 +202,8 @@ App.tsx
 │   └── Loading.tsx
 ├── stores/
 │   ├── authStore.ts        # user, token, login(), logout(), updateProfile()
-│   ├── chatStore.ts        # messages, activeChat, onlineUsers, sendMessage(), loadHistory()
+│   ├── chatStore.ts        # messages, activeChat, groups, onlineUsers, sendMessage(), loadHistory()
+│   ├── groupStore.ts       # groups, createGroup(), updateGroup(), addMember(), removeMember()
 │   └── socketStore.ts      # socket, connect(), disconnect()
 ├── services/
 │   ├── api.ts              # Axios 封装
@@ -270,10 +298,11 @@ pnpm --filter web dev         # 仅前端
 - Socket.IO 连接
 
 ### Phase 5：完善功能
+- 群聊管理（创建群、群信息、成员管理）
 - 文件/图片上传
 - 私聊
 - 表情选择器
-- 右侧信息面板
+- 右侧信息面板（群信息 / 私聊用户信息）
 
 ### Phase 6：打磨
 - 响应式适配
