@@ -1,0 +1,10 @@
+{
+  "name": "webchat-3",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @webchat/server dev & pnpm --filter @webchat/web dev",
+    "dev:server": "pnpm --filter @webchat/server dev",
+    "dev:web": "pnpm --filter @webchat/web dev",
+    "build": "pnpm --filter @webchat/shared build && pnpm --filter @webchat/server build && pnpm --filter @webchat/web build"
+  }
+}
