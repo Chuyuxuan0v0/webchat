@@ -4,6 +4,8 @@ import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { connectDatabase } from './config/database';
+import authRoutes from './modules/auth/auth.routes';
+import { errorHandler } from './middleware/error.middleware';
 
 const app = express();
 const httpServer = createServer(app);
@@ -29,6 +31,9 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Auth routes
+app.use('/api/auth', authRoutes);
+
 // Socket.IO connection test
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
@@ -37,6 +42,9 @@ io.on('connection', (socket) => {
     console.log('Client disconnected:', socket.id);
   });
 });
+
+// Error handler (must be last middleware)
+app.use(errorHandler);
 
 // Start server
 const start = async () => {
