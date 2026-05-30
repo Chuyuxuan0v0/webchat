@@ -7,6 +7,7 @@ import { connectDatabase } from './config/database';
 import authRoutes from './modules/auth/auth.routes';
 import userRoutes from './modules/user/user.routes';
 import chatRoutes from './modules/chat/chat.routes';
+import groupRoutes from './modules/group/group.routes';
 import { errorHandler } from './middleware/error.middleware';
 import { initializeSocket } from './socket';
 
@@ -35,6 +36,7 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/messages', chatRoutes);
+app.use('/api/groups', groupRoutes);
 
 app.use(errorHandler);
 
