@@ -1,4 +1,4 @@
-import { User, IUser } from '../../models';
+import { User } from '../../models';
 import { AppError } from '../../middleware/error.middleware';
 
 export const userService = {
