@@ -5,6 +5,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { connectDatabase } from './config/database';
 import authRoutes from './modules/auth/auth.routes';
+import userRoutes from './modules/user/user.routes';
 import { errorHandler } from './middleware/error.middleware';
 
 const app = express();
@@ -33,6 +34,9 @@ app.get('/api/health', (_req, res) => {
 
 // Auth routes
 app.use('/api/auth', authRoutes);
+
+// User routes
+app.use('/api/users', userRoutes);
 
 // Socket.IO connection test
 io.on('connection', (socket) => {
