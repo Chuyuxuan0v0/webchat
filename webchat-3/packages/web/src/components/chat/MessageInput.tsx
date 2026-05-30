@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSocketStore } from '../../stores/socketStore';
 import { useChatStore } from '../../stores/chatStore';
+import FileUpload from './FileUpload';
 
 export default function MessageInput() {
   const [message, setMessage] = useState('');
@@ -24,7 +25,9 @@ export default function MessageInput() {
 
   return (
     <form onSubmit={handleSubmit} className="p-4 border-t border-gray-200 bg-white">
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
+        <FileUpload type="image" />
+        <FileUpload type="file" />
         <input
           type="text"
           value={message}

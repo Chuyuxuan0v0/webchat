@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import { createServer } from 'http';
@@ -8,6 +9,7 @@ import authRoutes from './modules/auth/auth.routes';
 import userRoutes from './modules/user/user.routes';
 import chatRoutes from './modules/chat/chat.routes';
 import groupRoutes from './modules/group/group.routes';
+import uploadRoutes from './modules/upload/upload.routes';
 import { errorHandler } from './middleware/error.middleware';
 import { initializeSocket } from './socket';
 
@@ -28,6 +30,7 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
+app.use('/uploads', express.static(path.join(process.env.UPLOAD_DIR || './uploads')));
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -37,6 +40,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/messages', chatRoutes);
 app.use('/api/groups', groupRoutes);
+app.use('/api/upload', uploadRoutes);
 
 app.use(errorHandler);
 
