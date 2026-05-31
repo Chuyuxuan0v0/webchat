@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 
 export default function LoginPage() {
@@ -7,7 +8,14 @@ export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const { login, register, isLoading, error, clearError } = useAuthStore();
+  const navigate = useNavigate();
+  const { login, register, isLoading, error, clearError, token } = useAuthStore();
+
+  useEffect(() => {
+    if (token) {
+      navigate('/', { replace: true });
+    }
+  }, [token, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
