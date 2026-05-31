@@ -7,10 +7,13 @@ interface ChatState {
   onlineUsers: User[];
   activeChat: { id: string; type: 'group' | 'private'; name: string } | null;
   isLoading: boolean;
+  hasMore: boolean;
+  currentPage: number;
 
   setActiveChat: (chat: { id: string; type: 'group' | 'private'; name: string }) => void;
   addMessage: (message: Message) => void;
   loadMessages: (chatId: string) => Promise<void>;
+  loadMoreMessages: () => Promise<void>;
   loadOnlineUsers: () => Promise<void>;
   setOnlineUsers: (users: User[]) => void;
   addOnlineUser: (user: { userId: string; username: string }) => void;
@@ -22,9 +25,11 @@ export const useChatStore = create<ChatState>((set, get) => ({
   onlineUsers: [],
   activeChat: null,
   isLoading: false,
+  hasMore: true,
+  currentPage: 1,
 
   setActiveChat: (chat) => {
-    set({ activeChat: chat, messages: [] });
+    set({ activeChat: chat, messages: [], hasMore: true, currentPage: 1 });
     get().loadMessages(chat.id);
   },
 
@@ -38,10 +43,35 @@ export const useChatStore = create<ChatState>((set, get) => ({
   loadMessages: async (chatId) => {
     set({ isLoading: true });
     try {
-      const { data } = await messageAPI.getMessages(chatId);
-      set({ messages: data.messages, isLoading: false });
+      const { data } = await messageAPI.getMessages(chatId, 1);
+      set({
+        messages: data.messages,
+        isLoading: false,
+        currentPage: 1,
+        hasMore: data.totalPages > 1,
+      });
     } catch (error) {
       console.error('Failed to load messages:', error);
+      set({ isLoading: false });
+    }
+  },
+
+  loadMoreMessages: async () => {
+    const { hasMore, isLoading, activeChat, currentPage, messages } = get();
+    if (!hasMore || isLoading || !activeChat) return;
+
+    set({ isLoading: true });
+    try {
+      const nextPage = currentPage + 1;
+      const { data } = await messageAPI.getMessages(activeChat.id, nextPage);
+      set({
+        messages: [...data.messages, ...messages],
+        currentPage: nextPage,
+        hasMore: nextPage < data.totalPages,
+        isLoading: false,
+      });
+    } catch (error) {
+      console.error('Failed to load more messages:', error);
       set({ isLoading: false });
     }
   },
