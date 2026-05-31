@@ -1,4 +1,4 @@
-
+> 近期在重构 V2，V3 版本，V2是VU3版本 , V3是react版本
 
 
 # webchat
