@@ -1,0 +1,3 @@
+[submodule "webchat-3"]
+	path = webchat-3
+	url = git@github.com:Chuyuxuan0v0/webchat-v3.git
